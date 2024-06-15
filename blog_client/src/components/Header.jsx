@@ -10,7 +10,7 @@ export default function Header() {
   return (
       <Navbar className='border-b-2'>
         <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-            <span className='px-2 py-1 bg-gradient-to-r from-lime-400 to-lime-500 rounded-lg text-white'>Mugiwara Blog</span>
+            <span className='px-2 py-1 bg-gradient-to-r from-lime-400 to-lime-500 rounded-lg text-black'>Mugiwara Blog</span>
         </Link>
         <form>
             <TextInput
@@ -28,7 +28,7 @@ export default function Header() {
                 <FaMoon/>
             </Button>
             <Link to='/sign-in'>
-                <Button gradientDuoTone="greenToBlue">
+                <Button gradientMonochrome="lime">
                     Sign In
                 </Button>
             </Link>
