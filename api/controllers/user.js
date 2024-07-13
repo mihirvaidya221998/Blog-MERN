@@ -45,6 +45,7 @@ export const updateUser = async(req, res, next) => {
         if (!req.body.username.match(/^[a-zA-Z0-9]+$/)){
             return next(errorHandler(400, 'Username should only contain letters and numbers'));
         }
+    }
 
         //Update the user
         try {
@@ -62,5 +63,5 @@ export const updateUser = async(req, res, next) => {
         } catch (error) {
             next(error)
         }
-    }
+    
 };
