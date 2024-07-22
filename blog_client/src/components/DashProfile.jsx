@@ -19,6 +19,8 @@ export default function DashProfile() {
     const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
     const [updateUserError, setUpdateUserError] = useState(null);
     const [showModal, setShowModal] = useState(false);//A state to show popup when the 
+    const { theme } = useSelector((state) => state.theme);
+    console.log(theme)
     //Updating the User Information
     const [formData, setFormData] = useState({});
     // console.log(imageFileUploadProgess, imageFileUploadError)
@@ -210,10 +212,10 @@ export default function DashProfile() {
 
       {/* Show Modal Property */}
       <Modal show={showModal} onClose={() => setShowModal(false)} popup size='md'>
-        <Modal.Header/>
-        <Modal.Body>
-            <div className="text-center">
-               <BsExclamationCircle className='h-10 w-10 text-red-500 dark:text-red-500 mb-4 mx-auto'/>
+        <Modal.Header className={theme === 'dark' ? 'bg-gray-800 text-white' : ''}/>
+        <Modal.Body className={theme === 'dark' ? 'bg-gray-800 text-white' : ''}>
+            <div className={`text-center ${theme === 'dark' ? 'dark' : ''}`}>
+               <BsExclamationCircle className='h-10 w-10 text-red-500 dark:text-red-500 dark: mb-4 mx-auto'/>
                <h3 className='mb-5 text-lg '>Are you sure you want to delete your account?</h3>
                <div className='flex justify-center gap-4'>
                 <Button color='failure' onClick={handleDeleteUserButton}>Yes</Button>
