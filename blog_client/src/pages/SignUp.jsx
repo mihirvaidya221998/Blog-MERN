@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button, Alert, Spinner } from 'flowbite-react'
 import OAuth from '../components/OAuth';
+import ProfileCapture from '../components/ProfileCapture';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [score, setScore] = useState(0);
   const navigate = useNavigate();
   // Handling the inputs in the form
   const handleChange = (e) =>{
@@ -18,6 +20,12 @@ export default function SignUp() {
     e.preventDefault();
     if(!formData.username || !formData.email || !formData.password){
       return setErrorMessage('Please enter all the fields!');
+    }
+    if (score === 0) {
+      return setErrorMessage('Complete Identity Verification');
+    }
+    if (score <= 0.875) {
+      return setErrorMessage('Identity Verification failed. Retry.');
     }
     try {
       setLoading(true);
@@ -67,6 +75,7 @@ export default function SignUp() {
               <Label value='Your Password'></Label>
               <TextInput type='password' placeholder='Password' id='password' onChange={handleChange}/>
             </div>
+            <ProfileCapture score={score} setScore={setScore} />
             <Button gradientMonochrome="lime" outline type='submit' disabled={loading}>
               {
               loading? (
@@ -95,3 +104,5 @@ export default function SignUp() {
     </div>
   )
 }
+
+
