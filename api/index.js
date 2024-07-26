@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.js';
 import authRoutes from './routes/auth.js';
 import cookieParser from 'cookie-parser';
+import postRoutes from './routes/posts.js';
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,8 @@ app.listen(3000, ()=>{
 app.use('/api/user', userRoutes);
 //SignUp
 app.use('/api/auth', authRoutes);
+//Posts
+app.use('/api/post', postRoutes);
 
 //Error Handling Middleware
 app.use((err, req, res, next) =>{
