@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../utils/verifyUtils.js';
-import { createPosts, getPosts, deletePosts } from '../controllers/posts.js';
+import { createPosts, getPosts, deletePosts, updatePosts } from '../controllers/posts.js';
 
 const router = express.Router();
 
@@ -10,5 +10,7 @@ router.post('/create-posts', verifyToken, createPosts);
 router.get('/get-posts', getPosts);
 //Delete Posts
 router.delete('/delete-posts/:postId/:userId',verifyToken , deletePosts);
+//Update Posts
+router.put('/update-posts/:postId/:userId', verifyToken, updatePosts);
 
 export default router; 

@@ -74,3 +74,27 @@ export const deletePosts = async(req, res, next) =>{
         next(error);
     }
 }
+
+//Update a post Controller
+export const updatePosts = async(req, res, next) =>{
+    if (!req.user.isAdmin || req.user.id !== req.params.userId){
+        return next(errorHandler(403, 'You are not authorized to update this post.'));
+    }
+    try {
+        const updatePost = await Post.findByIdAndUpdate(
+            req.params.postId,
+            {
+                $set: {
+                    title: req.body.title,
+                    content: req.body.content,
+                    image: req.body.image,
+                    category: req.body.category,
+                },
+            },
+            {new: true}
+        );
+        res.status(200).json(updatePost)
+    } catch (error) {
+        next(error)
+    }
+}
