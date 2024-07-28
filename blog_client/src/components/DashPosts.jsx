@@ -79,7 +79,7 @@ export default function DashPosts() {
               <Table.HeadCell><span>Edit</span></Table.HeadCell>
             </Table.Head>
             {userPosts.map((post) =>(
-                <Table.Body className='divide-y'>
+                <Table.Body className='divide-y' key={post._id}>
                   <Table.Row className='bg-white dark:border-gray-500 dark:bg-gray-800'>
                     <Table.Cell>{new Date(post.updatedAt).toDateString()}</Table.Cell>
                     <Table.Cell><Link to={`/post/${post.slug}`}>
