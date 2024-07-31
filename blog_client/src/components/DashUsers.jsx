@@ -61,7 +61,7 @@ export default function DashUsers() {
             setShowModal(false);
         }
         else{
-            console.log(data.message);
+            console.log(data.message); 
         }
     } catch (error) {
         console.log(error.message)

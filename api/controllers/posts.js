@@ -81,6 +81,7 @@ export const updatePosts = async(req, res, next) =>{
         return next(errorHandler(403, 'You are not authorized to update this post.'));
     }
     try {
+        console.log(req.params.postId)
         const updatePost = await Post.findByIdAndUpdate(
             req.params.postId,
             {
