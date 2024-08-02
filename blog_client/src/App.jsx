@@ -12,11 +12,13 @@ import PrivateRouteAdmin from './components/PrivateRouteAdmin'
 import CreatePost from './pages/CreatePost'
 import UpdatePost from './pages/UpdatePost'
 import PostPage from './pages/PostPage'
+import ScrollToTop from './components/ScrollToTop'
 
 export default function App() {
   return (
     <div className='text-2xl'>
       <BrowserRouter>
+      <ScrollToTop/>
         <Header/>
         <Routes>
           <Route path='/' element={<Home/>}/>
