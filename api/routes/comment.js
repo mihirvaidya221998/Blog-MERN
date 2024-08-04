@@ -1,7 +1,7 @@
 import express from 'express';
 import { createComment } from '../controllers/comment.js ';
 import { verifyToken } from '../utils/verifyUtils.js';
-import { getComments, likeComment } from '../controllers/comment.js';
+import { editComment, getComments, likeComment } from '../controllers/comment.js';
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ router.post('/create-comment',verifyToken ,createComment);
 //Get Comments
 router.get('/get-comments/:postId',getComments);
 //Route for the Likes
-router.put('/like-comment/:commentId', verifyToken, likeComment)
+router.put('/like-comment/:commentId', verifyToken, likeComment);
+//Edit Comments
+router.put('/edit-comment/:commentId', verifyToken, editComment);
 
 export default router; 
