@@ -35,7 +35,12 @@ export default function Comment({comment, onLike}) {
         <div type='button' onClick={()=>onLike(comment._id)} className={`text-gray-400 hover:text-lime-500 ${
           currentUser && comment.likes.includes(currentUser._id) && '!text-lime-500'
         }`}>
-          <button><FaThumbsUp className='text-sm'/></button>
+          <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2'>
+            <button><FaThumbsUp className='text-sm'/></button>
+            <p className='text-gray-500 dark:text-white'>
+              {comment.numberOfLikes > 0 && comment.numberOfLikes + " " + (comment.numberOfLikes === 1 ? "Like":"Likes")}
+            </p>
+          </div>
         </div>
       </div>
     </div>
