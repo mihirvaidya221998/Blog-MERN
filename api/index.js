@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import cookieParser from 'cookie-parser';
 import postRoutes from './routes/posts.js';
 import commentRoutes from './routes/comment.js';
+import path from 'path';
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,8 @@ mongoose
 .catch((err) =>{
     console.log(err);
 });
+
+const __dirname = path.resolve();
 
 app.use(express.json());
 //Extract cookie from the browser
@@ -33,6 +36,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 //Comments
 app.use('/api/comment', commentRoutes);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) =>{
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+})
 
 //Error Handling Middleware
 app.use((err, req, res, next) =>{
