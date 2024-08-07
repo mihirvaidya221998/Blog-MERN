@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {test, updateUser, deleteUser, signout, getUsers} from '../controllers/user.js';
+import {test, updateUser, deleteUser, signout, getUsers, getUser} from '../controllers/user.js';
 import { verifyToken } from '../utils/verifyUtils.js';
 
 const router = express.Router();
@@ -11,5 +11,6 @@ router.delete('/delete/:userId', verifyToken, deleteUser);
 router.post('/signout', signout);
 //Get all the users and show it to an Admin
 router.get('/get-users', verifyToken, getUsers);
+router.get('/:userId', getUser);
 
 export default router;
