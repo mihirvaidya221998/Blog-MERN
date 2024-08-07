@@ -21,6 +21,8 @@ mongoose
 
 const __dirname = path.resolve();
 
+console.log(__dirname)
+
 app.use(express.json());
 //Extract cookie from the browser
 app.use(cookieParser());
@@ -37,10 +39,10 @@ app.use('/api/post', postRoutes);
 //Comments
 app.use('/api/comment', commentRoutes);
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static(path.join(__dirname, '/blog_client/dist')));
 
 app.get('*', (req, res) =>{
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, 'blog_client', 'dist', 'index.html'));
 })
 
 //Error Handling Middleware
