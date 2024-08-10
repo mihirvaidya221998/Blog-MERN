@@ -2,17 +2,27 @@ import User from '../models/user.js';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 //SignUp Controller
 export const signup = async(req, res, next) =>{
-    const {username, email, password} = req.body;
+    const {username, email, password, captchaToken} = req.body;
+    //console.log(captchaToken);
     if(!username || !email || !password || username === '' || email === '' || password === ''){
         next(errorHandler(400, 'All Fields are Required'))
     }
 
-    const hashedPassword = bcryptjs.hashSync(password, 10)
-    const newUser = new User({username, email, password: hashedPassword});
+    const secretKey =  process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+    const googleVerificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
     try {
+        const captchaData = await axios.post(googleVerificationUrl);
+        const captchaSuccess = captchaData.data.success;
+        if(!captchaSuccess){
+            return next(errorHandler(400, 'CAPTCHA verfication failed'));
+        }
+        const hashedPassword = bcryptjs.hashSync(password, 10)
+        const newUser = new User({username, email, password: hashedPassword});
+   
         await newUser.save();
         res.json({message: 'User registered successfully!'});
         
