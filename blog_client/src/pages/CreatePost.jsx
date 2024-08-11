@@ -18,6 +18,33 @@ export default function CreatePost() {
   const navigate = useNavigate();
   // console.log(formData);
   
+  //Toolbars for React-quill
+  const modules = {
+    toolbar: [
+      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }], // outdent/indent
+      [{ 'direction': 'rtl' }], // text direction
+      [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+      [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
+      [{ 'align': [] }],
+      ['link', 'image', 'video'],
+      ['code-block'],  // Add code block option here
+      ['clean'] // remove formatting button
+    ],
+  };
+
+  // Define formats supported by the editor
+  const formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike',
+    'script', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video',
+    'code-block'  // Enable code block format
+  ];
 
   //Function to handle image uploading
   const handleUploadImage = async() =>{
@@ -113,7 +140,7 @@ export default function CreatePost() {
               <Alert color='failure'>{imageFileUploadError}</Alert>
             )}
             {formData.image && (<img src={formData.image} alt='upload' className='w-full h-72 object-cover'/>)}
-            <ReactQuill theme='snow' placeholder='Start Writing' className='h-72 mb-12' required onChange={(value) => {
+            <ReactQuill theme='snow' modules={modules} formats={formats} placeholder='Start Writing' className='h-72 mb-12' required onChange={(value) => {
               setFormData({...formData, content: value})
             }}/>
             <Button type='submit' gradientMonochrome="lime">Publish</Button>

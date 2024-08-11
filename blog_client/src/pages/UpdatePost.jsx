@@ -20,6 +20,34 @@ export default function UpdatePost() {
   const {currentUser} = useSelector((state) => state.user);
   // console.log(formData);
 
+  //Toolbars for React-quill
+  const modules = {
+    toolbar: [
+      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }], // outdent/indent
+      [{ 'direction': 'rtl' }], // text direction
+      [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+      [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
+      [{ 'align': [] }],
+      ['link', 'image', 'video'],
+      ['code-block'],  // Add code block option here
+      ['clean'] // remove formatting button
+    ],
+  };
+
+  // Define formats supported by the editor
+  const formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike',
+    'script', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video',
+    'code-block'  // Enable code block format
+  ];
+
   //getting post ID from the parameters
   const {postId} = useParams();
   // console.log(postId);
@@ -144,7 +172,7 @@ export default function UpdatePost() {
               <Alert color='failure'>{imageFileUploadError}</Alert>
             )}
             {formData.image && (<img src={formData.image} alt='upload' className='w-full h-72 object-cover'/>)}
-            <ReactQuill value={formData.content} theme='snow' placeholder='Start Writing' className='h-72 mb-12' required onChange={(value) => {
+            <ReactQuill value={formData.content} modules={modules} formats={formats} theme='snow' placeholder='Start Writing' className='h-72 mb-12' required onChange={(value) => {
               setFormData({...formData, content: value})
             }}/>
             <Button type='submit' gradientMonochrome="lime">Update</Button>
