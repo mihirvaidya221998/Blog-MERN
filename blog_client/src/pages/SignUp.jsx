@@ -13,6 +13,7 @@ export default function SignUp() {
   const [captchaToken, setCaptchaToken] = useState(null);
   const navigate = useNavigate();
   const SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
+  console.log(SITE_KEY);
 
   // console.log('Captcha Token: ',captchaToken);
 
