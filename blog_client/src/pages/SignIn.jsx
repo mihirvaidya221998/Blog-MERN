@@ -4,16 +4,24 @@ import { Label, TextInput, Button, Alert, Spinner } from 'flowbite-react'
 import { signInSuccess, signInStart, signInFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
+  const [captchaToken, setCaptchaToken] = useState(null);
   const {loading, error: errorMessage} = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
   // Handling the inputs in the form
   const handleChange = (e) =>{
     setFormData({...formData, [e.target.id]: e.target.value.trim()});
   };
+
+      // CAPTCHA Logic
+  const handleCaptcha = async(value) =>{
+    setCaptchaToken(value);
+  }
   
   //Handling the submition of the form
   const handleSubmit = async(e) =>{
@@ -21,12 +29,15 @@ export default function SignIn() {
     if( !formData.email || !formData.password){
       return dispatch(signInFailure('Please enter all the fields!'))
     }
+    if (!captchaToken) {
+      return dispatch(signInFailure('Please complete the CAPTCHA'));
+    }
     try {
       dispatch(signInStart());
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formData)
+        body: JSON.stringify({...formData, captchaToken})
       });
       const data = await res.json();
       if (data.success === false){
@@ -64,6 +75,9 @@ export default function SignIn() {
             <div className=''>
               <Label value='Your Password'></Label>
               <TextInput type='password' placeholder='Password' id='password' onChange={handleChange}/>
+            </div>
+            <div className=''>
+              <ReCAPTCHA sitekey={SITE_KEY} onChange={handleCaptcha}/>
             </div>
             <Button gradientMonochrome="lime" type='submit' outline disabled={loading}>
               {

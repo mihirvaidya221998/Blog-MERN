@@ -35,12 +35,19 @@ export const signup = async(req, res, next) =>{
 
 //Signin Controller
 export const signin = async(req, res, next) => {
-    const {email, password} = req.body;
-    if(!email || !password || email==='' || password === ''){
+    const {email, password, captchaToken} = req.body;
+    const secretKey =  process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+    const googleVerificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
+    if(!email || !password || !captchaToken || email==='' || password === ''){
         next(errorHandler(400, 'All Fields are Required!'));
     }
 
     try {
+        const captchaData = await axios.post(googleVerificationUrl);
+        const captchaSuccess = captchaData.data.success;
+        if(!captchaSuccess){
+            return next(errorHandler(400, 'CAPTCHA verfication failed'));
+        }
         const signinEmail = await User.findOne({email});
         if(!signinEmail){
             return next(errorHandler(404, 'There is no such user!'));
