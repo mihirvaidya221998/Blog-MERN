@@ -33,34 +33,41 @@ export const signup = async(req, res, next) =>{
     
 }
 
-//Signin Controller
 export const signin = async(req, res, next) => {
     const {email, password, captchaToken} = req.body;
-    const secretKey =  process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
-    const googleVerificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
-    if(!email || !password || !captchaToken || email==='' || password === ''){
-        next(errorHandler(400, 'All Fields are Required!'));
+
+    if (!email || !password || (process.env.RECAPTCHA_ENABLED === 'true' && !captchaToken) || email === '' || password === '') {
+        return next(errorHandler(400, 'All Fields are Required!'));
     }
 
     try {
-        const captchaData = await axios.post(googleVerificationUrl);
-        const captchaSuccess = captchaData.data.success;
-        if(!captchaSuccess){
-            return next(errorHandler(400, 'CAPTCHA verfication failed'));
+        // Skip CAPTCHA verification if RECAPTCHA_ENABLED is false
+        if (process.env.RECAPTCHA_ENABLED === 'true') {
+            const secretKey = process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+            const googleVerificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
+            const captchaData = await axios.post(googleVerificationUrl);
+            const captchaSuccess = captchaData.data.success;
+            if (!captchaSuccess) {
+                return next(errorHandler(400, 'CAPTCHA verification failed'));
+            }
         }
-        const signinEmail = await User.findOne({email});
-        if(!signinEmail){
+
+        const signinEmail = await User.findOne({ email });
+        if (!signinEmail) {
             return next(errorHandler(404, 'There is no such user!'));
         }
+
         const signinPassword = bcryptjs.compareSync(password, signinEmail.password);
-        if(!signinPassword){
-            return next(errorHandler(400, 'There is no such user!'));
+        if (!signinPassword) {
+            return next(errorHandler(400, 'Invalid password!'));
         }
+
         const token = jwt.sign(
-            {id: signinEmail._id, isAdmin: signinEmail.isAdmin},
+            { id: signinEmail._id, isAdmin: signinEmail.isAdmin },
             process.env.JWT_SECRET,
         );
-        const {password: pass, ...rest} = signinEmail._doc;
+
+        const { password: pass, ...rest } = signinEmail._doc;
         res.status(200).cookie('access_token', token, {
             httpOnly: true
         }).json(rest);

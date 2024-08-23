@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import cookieParser from 'cookie-parser';
 import postRoutes from './routes/posts.js';
 import commentRoutes from './routes/comment.js';
+import chatbotRoutes from './routes/chatbot.js';
 import path from 'path';
 
 const app = express();
@@ -38,6 +39,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 //Comments
 app.use('/api/comment', commentRoutes);
+//Chatbot
+app.use('/api/chatbot', chatbotRoutes);
 
 app.use(express.static(path.join(__dirname, '/blog_client/dist')));
 

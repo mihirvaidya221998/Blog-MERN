@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+// Define the Chat schema
+const chatSchema = new mongoose.Schema({
+  role: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -24,6 +36,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    chats: [chatSchema],
 },
     {timestamps: true}
 );
