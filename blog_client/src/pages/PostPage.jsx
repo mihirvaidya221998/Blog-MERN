@@ -4,6 +4,8 @@ import { Button, Spinner } from "flowbite-react";
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
 import PostCard from '../components/PostCard';
+import ChatBotWindow from '../components/ChatBotWindow';
+import ChatBotButton from '../components/ChatBotButton';
 
 export default function PostPage() {
     const {postSlug} = useParams();
@@ -84,6 +86,9 @@ export default function PostPage() {
               <PostCard key={post._id} post={post}/>
             ))
           }
+        </div>
+        <div>
+          <ChatBotButton/>
         </div>
       </div>
     </main>
