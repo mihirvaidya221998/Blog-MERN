@@ -1,6 +1,6 @@
 # Blog-MERN
 
-Blog website using MERN stack (Work in Progress)
+Blog website using MERN stack. The Demo for this website is: https://blog-mern-zhm9.onrender.com
 
 **Technologies Used**
 
